@@ -1,0 +1,75 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.join-section,
+.message-box {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+input[type="text"],
+textarea {
+  width: 70%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.chat-box {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  height: 300px;
+  overflow-y: auto;
+  background-color: #fafafa;
+}
+
+.message {
+  border-bottom: 1px solid #eee;
+  padding: 8px 0;
+  margin: 8px 0;
+  color: #333;
+}
+
+.own-message {
+  background-color: #dcf8c6;
+  border-radius: 8px;
+  padding: 4px 8px;
+  display: inline-block;
+  max-width: 80%;
+}
+
+.other-message {
+  background-color: #ebebeb;
+  border-radius: 8px;
+  padding: 4px 8px;
+  display: inline-block;
+  max-width: 80%;
+}

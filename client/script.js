@@ -1,0 +1,60 @@
+let ws;
+let userName;
+
+document.getElementById("joinBtn").addEventListener("click", joinRoom);
+document.getElementById("generateBtn").addEventListener("click", generateCode);
+document.getElementById("sendBtn").addEventListener("click", sendMessage);
+
+function generateCode() {
+  const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+  document.getElementById("roomCode").value = code;
+}
+
+function joinRoom() {
+  userName = document.getElementById("userName").value.trim();
+  const roomCode = document.getElementById("roomCode").value.trim();
+  if (!userName) {
+    alert("Please enter your name.");
+    return;
+  }
+  if (!roomCode) {
+    alert("Please enter a room code.");
+    return;
+  }
+
+  const wsUrl = "ws://localhost:8080"; // Adjust according to your setup
+  ws = new WebSocket(wsUrl);
+
+  ws.onopen = () => {
+    ws.send(JSON.stringify({ action: "join", room: roomCode, user: userName }));
+  };
+
+  ws.onmessage = (event) => {
+    const message = JSON.parse(event.data);
+    displayMessage(message);
+  };
+}
+
+function sendMessage() {
+  const messageInput = document.getElementById("messageInput");
+  const message = messageInput.value;
+  messageInput.value = "";
+
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.send(
+      JSON.stringify({ action: "message", content: message, user: userName })
+    );
+  }
+}
+
+function displayMessage(message) {
+  const chatBox = document.getElementById("chatBox");
+  const messageElement = document.createElement("div");
+  messageElement.classList.add("message");
+  messageElement.innerHTML = `<span class="${
+    message.user === userName ? "own-message" : "other-message"
+  }">${message.user}: ${message.content}</span>`;
+
+  chatBox.appendChild(messageElement);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
