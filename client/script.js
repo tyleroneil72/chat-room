@@ -22,7 +22,7 @@ function joinRoom() {
     return;
   }
 
-  const wsUrl = "ws://localhost:8080"; // Adjust according to your setup
+  const wsUrl = "ws://localhost:8080";
   ws = new WebSocket(wsUrl);
 
   ws.onopen = () => {
