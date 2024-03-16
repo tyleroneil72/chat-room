@@ -6,6 +6,11 @@ body {
   color: #333;
 }
 
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 .container {
   max-width: 800px;
   margin: auto;
@@ -85,6 +90,23 @@ button:hover {
   padding: 4px 8px;
   display: inline-block;
   max-width: 80%;
+}
+
+.rooms-section {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 20px;
+  background-color: #f8f8ff;
+}
+
+.rooms-section h3 {
+  margin-top: 0;
+}
+
+.rooms-section ul {
+  list-style-type: none;
+  padding: 0;
 }
 
 #sendBtn {

@@ -71,6 +71,24 @@ function displayMessage(message) {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
+function updateRoomsList() {
+  fetch("/rooms")
+    .then((response) => response.json())
+    .then((rooms) => {
+      const roomsList = document.getElementById("roomsList");
+      roomsList.innerHTML = ""; // Clear current list
+
+      rooms.forEach((room) => {
+        const li = document.createElement("li");
+        li.textContent = `${room.name} (${room.count} users)`;
+        roomsList.appendChild(li);
+      });
+    })
+    .catch((error) => console.error("Error fetching rooms:", error));
+}
+
+setInterval(updateRoomsList, 3000); // Update every 3 seconds
+
 document
   .getElementById("messageInput")
   .addEventListener("keypress", function (event) {

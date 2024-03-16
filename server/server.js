@@ -75,6 +75,15 @@ wss.on("connection", function connection(ws) {
   });
 });
 
+// Endpoint to get the list of available rooms
+app.get("/rooms", (req, res) => {
+  const roomList = Object.keys(rooms).map((room) => ({
+    name: room,
+    count: rooms[room].size,
+  }));
+  res.json(roomList);
+});
+
 app.listen(HTTP_PORT, () => {
   console.log(`HTTP server started on port ${HTTP_PORT}`);
 });
