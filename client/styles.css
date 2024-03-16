@@ -6,6 +6,11 @@ body {
   color: #333;
 }
 
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 .container {
   max-width: 800px;
   margin: auto;
