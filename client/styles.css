@@ -79,6 +79,14 @@ button:hover {
   max-width: 80%;
 }
 
+.system-message {
+  background-color: #d0f0c0; /* Light green background for system messages */
+  border-radius: 8px;
+  padding: 4px 8px;
+  display: inline-block;
+  max-width: 80%;
+}
+
 #sendBtn {
   height: 40px;
   width: 120px;

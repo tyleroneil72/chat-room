@@ -51,9 +51,15 @@ function displayMessage(message) {
   const chatBox = document.getElementById("chatBox");
   const messageElement = document.createElement("div");
   messageElement.classList.add("message");
-  messageElement.innerHTML = `<span class="${
-    message.user === userName ? "own-message" : "other-message"
-  }">${message.user}: ${message.content}</span>`;
+
+  let messageClass = "other-message";
+  if (message.user === userName) {
+    messageClass = "own-message";
+  } else if (message.user === "System") {
+    messageClass = "system-message";
+  }
+
+  messageElement.innerHTML = `<span class="${messageClass}">${message.user}: ${message.content}</span>`;
 
   chatBox.appendChild(messageElement);
   chatBox.scrollTop = chatBox.scrollHeight;
