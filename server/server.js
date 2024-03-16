@@ -3,7 +3,7 @@ const path = require("path");
 const app = express();
 const WebSocket = require("ws");
 const wss = new WebSocket.Server({ port: 8080 });
-
+const HTTP_PORT = 3000;
 // Serve static files from the client directory
 app.use(express.static(path.join(__dirname, "../client")));
 
@@ -75,8 +75,6 @@ wss.on("connection", function connection(ws) {
   });
 });
 
-// Start the Express server on a different port
-const HTTP_PORT = 3000; // You can choose any available port
 app.listen(HTTP_PORT, () => {
   console.log(`HTTP server started on port ${HTTP_PORT}`);
 });
