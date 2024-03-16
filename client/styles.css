@@ -1,6 +1,6 @@
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #e6e6fa; 
+  background-color: #e6e6fa;
   margin: 0;
   padding: 20px;
   color: #333;
@@ -9,7 +9,7 @@ body {
 .container {
   max-width: 800px;
   margin: auto;
-  background: #f8f8ff; 
+  background: #f8f8ff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 20px;
@@ -31,21 +31,21 @@ textarea {
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 
 button {
-  background-color: #957dad; 
+  background-color: #957dad;
   color: white;
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-left: 5px; 
+  margin-left: 5px;
 }
 
 button:hover {
-  background-color: #806a9b; 
+  background-color: #806a9b;
 }
 
 .chat-box {
@@ -54,7 +54,7 @@ button:hover {
   padding: 10px;
   height: 300px;
   overflow-y: auto;
-  background-color: #f3f3f7; 
+  background-color: #f3f3f7;
 }
 
 .message {
@@ -64,7 +64,7 @@ button:hover {
 }
 
 .own-message {
-  background-color: #dcd0ff; 
+  background-color: #dcd0ff;
   border-radius: 8px;
   padding: 4px 8px;
   display: inline-block;
@@ -72,9 +72,16 @@ button:hover {
 }
 
 .other-message {
-  background-color: #e6e0fa; 
+  background-color: #e6e0fa;
   border-radius: 8px;
   padding: 4px 8px;
   display: inline-block;
   max-width: 80%;
+}
+
+#sendBtn {
+  height: 40px;
+  width: 120px;
+  position: relative;
+  bottom: 25px;
 }
