@@ -37,13 +37,19 @@ function joinRoom() {
 
 function sendMessage() {
   const messageInput = document.getElementById("messageInput");
-  const message = messageInput.value;
-  messageInput.value = "";
+  const message = messageInput.value.trim();
 
-  if (ws && ws.readyState === WebSocket.OPEN) {
+  if (!ws || ws.readyState !== WebSocket.OPEN) {
+    alert("You must join a room before sending a message.");
+    return;
+  }
+
+  if (message) {
+    // Check if the message is not just whitespace
     ws.send(
       JSON.stringify({ action: "message", content: message, user: userName })
     );
+    messageInput.value = "";
   }
 }
 
