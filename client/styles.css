@@ -87,6 +87,23 @@ button:hover {
   max-width: 80%;
 }
 
+.rooms-section {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 20px;
+  background-color: #f8f8ff;
+}
+
+.rooms-section h3 {
+  margin-top: 0;
+}
+
+.rooms-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
 #sendBtn {
   height: 40px;
   width: 120px;
