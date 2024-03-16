@@ -25,6 +25,11 @@ function joinRoom(roomCodeFromList = null) {
     return;
   }
 
+  if (currentRoom && currentRoom !== roomCode) {
+    alert("You must leave your current room first.");
+    return;
+  }
+
   currentRoom = roomCode; // Set the current room
 
   const wsUrl = "ws://localhost:8080";
