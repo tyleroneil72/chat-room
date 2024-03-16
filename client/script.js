@@ -37,13 +37,19 @@ function joinRoom() {
 
 function sendMessage() {
   const messageInput = document.getElementById("messageInput");
-  const message = messageInput.value;
-  messageInput.value = "";
+  const message = messageInput.value.trim();
 
-  if (ws && ws.readyState === WebSocket.OPEN) {
+  if (!ws || ws.readyState !== WebSocket.OPEN) {
+    alert("You must join a room before sending a message.");
+    return;
+  }
+
+  if (message) {
+    // Check if the message is not just whitespace
     ws.send(
       JSON.stringify({ action: "message", content: message, user: userName })
     );
+    messageInput.value = "";
   }
 }
 
@@ -51,10 +57,25 @@ function displayMessage(message) {
   const chatBox = document.getElementById("chatBox");
   const messageElement = document.createElement("div");
   messageElement.classList.add("message");
-  messageElement.innerHTML = `<span class="${
-    message.user === userName ? "own-message" : "other-message"
-  }">${message.user}: ${message.content}</span>`;
+
+  let messageClass = "other-message";
+  if (message.user === userName) {
+    messageClass = "own-message";
+  } else if (message.user === "System") {
+    messageClass = "system-message";
+  }
+
+  messageElement.innerHTML = `<span class="${messageClass}">${message.user}: ${message.content}</span>`;
 
   chatBox.appendChild(messageElement);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
+
+document
+  .getElementById("messageInput")
+  .addEventListener("keypress", function (event) {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault(); // Prevent the default action to stop from creating a new line
+      sendMessage(); // Call the sendMessage function
+    }
+  });
