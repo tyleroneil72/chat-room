@@ -5,6 +5,7 @@ let currentRoom = null;
 document.getElementById("joinBtn").addEventListener("click", () => joinRoom());
 document.getElementById("generateBtn").addEventListener("click", generateCode);
 document.getElementById("sendBtn").addEventListener("click", sendMessage);
+document.getElementById("leaveBtn").addEventListener("click", leaveRoom);
 
 function generateCode() {
   const code = Math.random().toString(36).substring(2, 8).toUpperCase();
@@ -109,6 +110,20 @@ function updateRoomsList() {
       }
     })
     .catch((error) => console.error("Error fetching rooms:", error));
+}
+
+function leaveRoom() {
+  if (!ws || ws.readyState !== WebSocket.OPEN) {
+    alert("You are not in a room.");
+    return;
+  }
+
+  if (!currentRoom) {
+    alert("You are not in a room.");
+    return;
+  }
+  alert("You have left the room.");
+  window.location.reload(); // Refreshes the page
 }
 
 setInterval(updateRoomsList, 3000); // Update every 3 seconds
