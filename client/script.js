@@ -78,11 +78,20 @@ function updateRoomsList() {
       const roomsList = document.getElementById("roomsList");
       roomsList.innerHTML = ""; // Clear current list
 
-      rooms.forEach((room) => {
+      if (rooms.length === 0 || rooms.every((room) => room.count === 0)) {
         const li = document.createElement("li");
-        li.textContent = `${room.name} (${room.count} users)`;
+        li.textContent = "No Active Rooms";
         roomsList.appendChild(li);
-      });
+      } else {
+        rooms.forEach((room) => {
+          if (room.count > 0) {
+            // Only display rooms with users
+            const li = document.createElement("li");
+            li.textContent = `${room.name} (${room.count} users)`;
+            roomsList.appendChild(li);
+          }
+        });
+      }
     })
     .catch((error) => console.error("Error fetching rooms:", error));
 }
