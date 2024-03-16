@@ -47,10 +47,21 @@ button {
   border-radius: 4px;
   cursor: pointer;
   margin-left: 5px;
+  margin-bottom: 5px;
 }
 
 button:hover {
   background-color: #806a9b;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  background-color: #cccccc;
 }
 
 .chat-box {

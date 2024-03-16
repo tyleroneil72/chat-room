@@ -1,18 +1,21 @@
 let ws;
 let userName;
+let currentRoom = null;
 
-document.getElementById("joinBtn").addEventListener("click", joinRoom);
+document.getElementById("joinBtn").addEventListener("click", () => joinRoom());
 document.getElementById("generateBtn").addEventListener("click", generateCode);
 document.getElementById("sendBtn").addEventListener("click", sendMessage);
+document.getElementById("leaveBtn").addEventListener("click", leaveRoom);
 
 function generateCode() {
   const code = Math.random().toString(36).substring(2, 8).toUpperCase();
   document.getElementById("roomCode").value = code;
 }
 
-function joinRoom() {
+function joinRoom(roomCodeFromList = null) {
   userName = document.getElementById("userName").value.trim();
-  const roomCode = document.getElementById("roomCode").value.trim();
+  let roomCode =
+    roomCodeFromList || document.getElementById("roomCode").value.trim();
   if (!userName) {
     alert("Please enter your name.");
     return;
@@ -22,11 +25,21 @@ function joinRoom() {
     return;
   }
 
+  if (currentRoom && currentRoom !== roomCode) {
+    alert("You must leave your current room first.");
+    return;
+  }
+
+  currentRoom = roomCode; // Set the current room
+
   const wsUrl = "ws://localhost:8080";
-  ws = new WebSocket(wsUrl);
+  if (!ws || ws.readyState !== WebSocket.OPEN) {
+    ws = new WebSocket(wsUrl);
+  }
 
   ws.onopen = () => {
     ws.send(JSON.stringify({ action: "join", room: roomCode, user: userName }));
+    updateRoomsList(); // Update rooms list after joining
   };
 
   ws.onmessage = (event) => {
@@ -45,7 +58,6 @@ function sendMessage() {
   }
 
   if (message) {
-    // Check if the message is not just whitespace
     ws.send(
       JSON.stringify({ action: "message", content: message, user: userName })
     );
@@ -78,13 +90,45 @@ function updateRoomsList() {
       const roomsList = document.getElementById("roomsList");
       roomsList.innerHTML = ""; // Clear current list
 
-      rooms.forEach((room) => {
+      if (rooms.length === 0 || rooms.every((room) => room.count === 0)) {
         const li = document.createElement("li");
-        li.textContent = `${room.name} (${room.count} users)`;
+        li.textContent = "No active rooms";
         roomsList.appendChild(li);
-      });
+      } else {
+        rooms.forEach((room) => {
+          const li = document.createElement("li");
+          li.textContent = `${room.name} (${room.count} users)`;
+          const joinButton = document.createElement("button");
+          joinButton.textContent = "Join Room";
+          joinButton.onclick = () => joinRoom(room.name);
+
+          // Grey out the button if the user is already in the room
+          if (currentRoom === room.name) {
+            joinButton.disabled = true;
+          } else {
+            joinButton.disabled = false;
+          }
+
+          li.appendChild(joinButton);
+          roomsList.appendChild(li);
+        });
+      }
     })
     .catch((error) => console.error("Error fetching rooms:", error));
+}
+
+function leaveRoom() {
+  if (!ws || ws.readyState !== WebSocket.OPEN) {
+    alert("You are not in a room.");
+    return;
+  }
+
+  if (!currentRoom) {
+    alert("You are not in a room.");
+    return;
+  }
+  alert("You have left the room.");
+  window.location.reload(); // Refreshes the page
 }
 
 setInterval(updateRoomsList, 3000); // Update every 3 seconds
