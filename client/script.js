@@ -87,7 +87,7 @@ function updateRoomsList() {
     .catch((error) => console.error("Error fetching rooms:", error));
 }
 
-setInterval(updateRoomsList, 5000); // Update every 5 seconds
+setInterval(updateRoomsList, 3000); // Update every 3 seconds
 
 document
   .getElementById("messageInput")
