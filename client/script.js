@@ -64,3 +64,12 @@ function displayMessage(message) {
   chatBox.appendChild(messageElement);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
+
+document
+  .getElementById("messageInput")
+  .addEventListener("keypress", function (event) {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault(); // Prevent the default action to stop from creating a new line
+      sendMessage(); // Call the sendMessage function
+    }
+  });
