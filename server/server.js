@@ -1,5 +1,11 @@
+const express = require("express");
+const path = require("path");
+const app = express();
 const WebSocket = require("ws");
 const wss = new WebSocket.Server({ port: 8080 });
+const HTTP_PORT = 3000;
+// Serve static files from the client directory
+app.use(express.static(path.join(__dirname, "../client")));
 
 const rooms = {};
 
@@ -30,7 +36,6 @@ wss.on("connection", function connection(ws) {
         if (!rooms[currentRoom]) {
           rooms[currentRoom] = new Set();
         }
-        // Notify all clients in the room about the new user joining before adding the new user to the room
         const joinMessage = {
           user: "System",
           content: `${userName || "Someone"} has joined the room.`,
@@ -61,7 +66,6 @@ wss.on("connection", function connection(ws) {
       if (rooms[currentRoom].size === 0) {
         delete rooms[currentRoom];
       } else {
-        // Notify the room that the user has left
         broadcastMessage(currentRoom, {
           user: "System",
           content: `${userName || "Someone"} has left the room.`,
@@ -69,6 +73,10 @@ wss.on("connection", function connection(ws) {
       }
     }
   });
+});
+
+app.listen(HTTP_PORT, () => {
+  console.log(`HTTP server started on port ${HTTP_PORT}`);
 });
 
 console.log("WebSocket server started on port 8080");
