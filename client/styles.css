@@ -85,3 +85,10 @@ button:hover {
   position: relative;
   bottom: 25px;
 }
+
+@media (max-width: 513px) {
+  #sendBtn {
+    position: static;
+    bottom: auto;
+  }
+}
