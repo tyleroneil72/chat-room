@@ -1,7 +1,7 @@
 let ws;
 let userName;
 
-document.getElementById("joinBtn").addEventListener("click", joinRoom);
+document.getElementById("joinBtn").addEventListener("click", () => joinRoom());
 document.getElementById("generateBtn").addEventListener("click", generateCode);
 document.getElementById("sendBtn").addEventListener("click", sendMessage);
 
@@ -10,9 +10,10 @@ function generateCode() {
   document.getElementById("roomCode").value = code;
 }
 
-function joinRoom() {
+function joinRoom(roomCodeFromList = null) {
   userName = document.getElementById("userName").value.trim();
-  const roomCode = document.getElementById("roomCode").value.trim();
+  let roomCode =
+    roomCodeFromList || document.getElementById("roomCode").value.trim();
   if (!userName) {
     alert("Please enter your name.");
     return;
@@ -23,10 +24,13 @@ function joinRoom() {
   }
 
   const wsUrl = "ws://localhost:8080";
-  ws = new WebSocket(wsUrl);
+  if (!ws || ws.readyState !== WebSocket.OPEN) {
+    ws = new WebSocket(wsUrl);
+  }
 
   ws.onopen = () => {
     ws.send(JSON.stringify({ action: "join", room: roomCode, user: userName }));
+    updateRoomsList(); // Update rooms list after joining
   };
 
   ws.onmessage = (event) => {
@@ -45,7 +49,6 @@ function sendMessage() {
   }
 
   if (message) {
-    // Check if the message is not just whitespace
     ws.send(
       JSON.stringify({ action: "message", content: message, user: userName })
     );
@@ -80,14 +83,17 @@ function updateRoomsList() {
 
       if (rooms.length === 0 || rooms.every((room) => room.count === 0)) {
         const li = document.createElement("li");
-        li.textContent = "No Active Rooms";
+        li.textContent = "No active rooms";
         roomsList.appendChild(li);
       } else {
         rooms.forEach((room) => {
           if (room.count > 0) {
-            // Only display rooms with users
             const li = document.createElement("li");
             li.textContent = `${room.name} (${room.count} users)`;
+            const joinButton = document.createElement("button");
+            joinButton.textContent = "Join Room";
+            joinButton.onclick = () => joinRoom(room.name);
+            li.appendChild(joinButton);
             roomsList.appendChild(li);
           }
         });
