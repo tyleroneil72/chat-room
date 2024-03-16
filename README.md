@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
-Pet project to learn web sockets and socket.io
+Pet project to learn web sockets
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
