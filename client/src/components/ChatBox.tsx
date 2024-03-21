@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import styles from "../styles/ChatBox.module.css";
 
 interface Message {
@@ -12,31 +12,23 @@ interface ChatBoxProps {
 }
 
 const ChatBox: React.FC<ChatBoxProps> = ({ userName, messages }) => {
-  const [localMessages, setLocalMessages] = useState<Message[]>(messages);
   const chatBoxRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setLocalMessages(messages);
-  }, [messages]);
 
   useEffect(() => {
     if (chatBoxRef.current) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
-  }, [localMessages]);
+  }, [messages]);
 
   const renderMessage = (message: Message, index: number) => {
-    let messageClass = styles.otherMessage;
-    if (message.user === userName) {
-      messageClass = styles.ownMessage;
-    } else if (message.user === "System") {
-      messageClass = styles.systemMessage;
-    }
+    const isOwnMessage = message.user === userName;
+    const messageClass = isOwnMessage ? styles.ownMessage : styles.otherMessage;
 
     return (
       <div key={index} className={`${styles.message} ${messageClass}`}>
         <span>
-          {message.user}: {message.content}
+          {isOwnMessage ? "" : `${message.user}: `}
+          {message.content}
         </span>
       </div>
     );
@@ -44,7 +36,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ userName, messages }) => {
 
   return (
     <div className={styles.chatBox} ref={chatBoxRef}>
-      {localMessages.map(renderMessage)}
+      {messages.map(renderMessage)}
     </div>
   );
 };
