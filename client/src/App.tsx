@@ -62,7 +62,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1>Chat Room App</h1>
+      <h1>Chat Room</h1>
       <JoinSection
         onJoin={(user, room) => {
           setUserName(user);
