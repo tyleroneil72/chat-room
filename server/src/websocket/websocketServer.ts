@@ -100,5 +100,5 @@ export function setupWebSocketServer() {
     });
   });
 
-  console.log(`WebSocket server started on port ${WS_PORT}`);
+  // console.log(`WebSocket server started on http://localhost:${WS_PORT}`);
 }

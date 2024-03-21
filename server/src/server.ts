@@ -12,5 +12,5 @@ registerHttpRoutes(app);
 setupWebSocketServer();
 
 app.listen(HTTP_PORT, () => {
-  console.log(`HTTP server started on port ${HTTP_PORT}`);
+  console.log(`HTTP server started on http://localhost:${HTTP_PORT}`);
 });
