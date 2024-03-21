@@ -16,16 +16,26 @@ export function setupWebSocketServer() {
       switch (parsedMessage.action) {
         case "join":
           userName = parsedMessage.user ?? "Anonymous";
-          currentRoom = parsedMessage.room ?? "defaultRoom";
+          const newRoom = parsedMessage.room ?? "defaultRoom";
 
-          if (currentRoom && !rooms[currentRoom]) {
-            rooms[currentRoom] = new Set();
+          // Leave the previous room if different
+          if (currentRoom && rooms[currentRoom] && currentRoom !== newRoom) {
+            rooms[currentRoom].delete(ws);
+            if (rooms[currentRoom].size === 0) {
+              delete rooms[currentRoom];
+            } else {
+              broadcastMessage(currentRoom, {
+                user: "System",
+                content: `${userName} has left the room.`,
+              });
+            }
           }
 
+          currentRoom = newRoom;
           if (currentRoom) {
+            rooms[currentRoom] = rooms[currentRoom] || new Set();
             rooms[currentRoom].add(ws);
 
-            // Notify other users in the room
             broadcastMessage(
               currentRoom,
               {
@@ -33,9 +43,8 @@ export function setupWebSocketServer() {
                 content: `${userName} has joined the room.`,
               },
               ws
-            ); // Exclude the sender from the broadcast
+            );
 
-            // Direct message to the joining user
             ws.send(
               JSON.stringify({
                 user: "System",
@@ -53,6 +62,23 @@ export function setupWebSocketServer() {
             });
           }
           break;
+
+        case "leave":
+          if (currentRoom && rooms[currentRoom]) {
+            rooms[currentRoom].delete(ws);
+            broadcastMessage(currentRoom, {
+              user: "System",
+              content: `${userName} has left the room.`,
+            });
+
+            if (rooms[currentRoom].size === 0) {
+              delete rooms[currentRoom];
+            }
+
+            currentRoom = null;
+            userName = null;
+          }
+          break;
       }
     });
 
@@ -67,6 +93,9 @@ export function setupWebSocketServer() {
             content: `${userName} has left the room.`,
           });
         }
+
+        currentRoom = null;
+        userName = null;
       }
     });
   });

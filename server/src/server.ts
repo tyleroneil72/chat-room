@@ -6,7 +6,7 @@ import { registerHttpRoutes } from "./routes/httpRoutes";
 
 const app: Express = express();
 
-app.use(express.static(path.join(__dirname, "../../client")));
+app.use(express.static(path.join(__dirname, "../../client/dist")));
 
 registerHttpRoutes(app);
 setupWebSocketServer();
