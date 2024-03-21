@@ -38,7 +38,7 @@ npm install
 
 ```Bash
 cd server
-node server.js
+npm run dev
 ```
 
 and open `http://localhost:3000/`
