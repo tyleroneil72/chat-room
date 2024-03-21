@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./styles/JoinSection.module.css"; // Make sure you have this CSS module file
+import styles from "./styles/JoinSection.module.css";
 
 interface JoinSectionProps {
   onJoin: (userName: string, roomCode: string) => void;
