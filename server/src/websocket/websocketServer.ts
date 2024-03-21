@@ -16,15 +16,32 @@ export function setupWebSocketServer() {
       switch (parsedMessage.action) {
         case "join":
           userName = parsedMessage.user ?? "Anonymous";
-          currentRoom = parsedMessage.room ?? "defaultRoom";
+          const newRoom = parsedMessage.room ?? "defaultRoom";
 
+          // Leave the previous room if different
+          if (currentRoom && rooms[currentRoom] && currentRoom !== newRoom) {
+            rooms[currentRoom].delete(ws);
+            if (rooms[currentRoom].size === 0) {
+              delete rooms[currentRoom];
+            } else {
+              broadcastMessage(currentRoom, {
+                user: "System",
+                content: `${userName} has left the room.`,
+              });
+            }
+          }
+
+          currentRoom = newRoom;
           if (currentRoom) {
             rooms[currentRoom] = rooms[currentRoom] || new Set();
             rooms[currentRoom].add(ws);
 
             broadcastMessage(
               currentRoom,
-              { user: "System", content: `${userName} has joined the room.` },
+              {
+                user: "System",
+                content: `${userName} has joined the room.`,
+              },
               ws
             );
 
