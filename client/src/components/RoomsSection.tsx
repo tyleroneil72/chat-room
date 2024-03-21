@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "./styles/RoomsSection.module.css";
+import styles from "../styles/RoomsSection.module.css";
 
 interface Room {
   name: string;

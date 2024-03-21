@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./styles/MessageBox.module.css";
+import styles from "../styles/MessageBox.module.css";
 
 interface MessageBoxProps {
   onSendMessage: (message: string) => void;

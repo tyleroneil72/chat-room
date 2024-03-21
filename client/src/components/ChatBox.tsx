@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import styles from "./styles/ChatBox.module.css";
+import styles from "../styles/ChatBox.module.css";
 
 interface Message {
   user: string;
