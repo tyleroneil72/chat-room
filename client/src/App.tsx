@@ -46,6 +46,22 @@ const App: React.FC = () => {
     }
   };
 
+  const leaveRoom = () => {
+    if (!currentRoom) {
+      alert("You are not in a room.");
+      return;
+    }
+
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(
+        JSON.stringify({ action: "leave", room: currentRoom, user: userName })
+      );
+    }
+
+    setCurrentRoom("");
+    setMessages([]);
+  };
+
   const sendMessage = (content: string) => {
     if (!ws) {
       alert("WebSocket is not connected");
@@ -70,6 +86,7 @@ const App: React.FC = () => {
         }}
         onGenerateCode={handleGenerateCode}
       />
+      <button onClick={leaveRoom}>Leave Room</button>
       <ChatBox userName={userName} messages={messages} />
       <MessageBox onSendMessage={sendMessage} />
       <RoomsSection currentRoom={currentRoom} onJoinRoom={joinRoom} />
