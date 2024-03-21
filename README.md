@@ -39,13 +39,14 @@ npm run build
 # Backend
 cd server
 npm install
+npm run build
 ```
 
 ## Usage
 
 ```Bash
 cd server
-npm run dev
+npm run start
 ```
 
 and open `http://localhost:3000/`
