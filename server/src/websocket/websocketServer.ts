@@ -18,24 +18,16 @@ export function setupWebSocketServer() {
           userName = parsedMessage.user ?? "Anonymous";
           currentRoom = parsedMessage.room ?? "defaultRoom";
 
-          if (currentRoom && !rooms[currentRoom]) {
-            rooms[currentRoom] = new Set();
-          }
-
           if (currentRoom) {
+            rooms[currentRoom] = rooms[currentRoom] || new Set();
             rooms[currentRoom].add(ws);
 
-            // Notify other users in the room
             broadcastMessage(
               currentRoom,
-              {
-                user: "System",
-                content: `${userName} has joined the room.`,
-              },
+              { user: "System", content: `${userName} has joined the room.` },
               ws
-            ); // Exclude the sender from the broadcast
+            );
 
-            // Direct message to the joining user
             ws.send(
               JSON.stringify({
                 user: "System",
@@ -53,6 +45,23 @@ export function setupWebSocketServer() {
             });
           }
           break;
+
+        case "leave":
+          if (currentRoom && rooms[currentRoom]) {
+            rooms[currentRoom].delete(ws);
+            broadcastMessage(currentRoom, {
+              user: "System",
+              content: `${userName} has left the room.`,
+            });
+
+            if (rooms[currentRoom].size === 0) {
+              delete rooms[currentRoom];
+            }
+
+            currentRoom = null;
+            userName = null;
+          }
+          break;
       }
     });
 
@@ -67,6 +76,9 @@ export function setupWebSocketServer() {
             content: `${userName} has left the room.`,
           });
         }
+
+        currentRoom = null;
+        userName = null;
       }
     });
   });
