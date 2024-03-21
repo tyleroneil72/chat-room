@@ -1,0 +1,35 @@
+.roomsSection {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #f8f8ff;
+}
+
+.roomsSection h3 {
+  margin-top: 0;
+}
+
+.roomsSection ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.roomsSection button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #957dad;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.roomsSection button:hover {
+  background-color: #806a9b;
+}
+
+.roomsSection button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+}
