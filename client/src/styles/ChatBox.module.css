@@ -1,0 +1,38 @@
+.chatBox {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  height: 300px;
+  overflow-y: auto;
+  background-color: #f3f3f7;
+}
+
+.message {
+  border-bottom: 1px solid #eee;
+  padding: 8px 0;
+  margin: 8px 0;
+}
+
+.ownMessage {
+  background-color: #dcd0ff;
+  border-radius: 8px;
+  padding: 4px 8px;
+  display: inline-block;
+  max-width: 80%;
+}
+
+.otherMessage {
+  background-color: #ebebeb;
+  border-radius: 8px;
+  padding: 4px 8px;
+  display: inline-block;
+  max-width: 80%;
+}
+
+.systemMessage {
+  background-color: #d0f0c0;
+  border-radius: 8px;
+  padding: 4px 8px;
+  display: inline-block;
+  max-width: 80%;
+}
