@@ -1,17 +1,22 @@
-const express = require("express");
-const path = require("path");
-const app = express();
-const WebSocket = require("ws");
-const wss = new WebSocket.Server({ port: 8080 });
-const HTTP_PORT = 3000;
-// Serve static files from the client directory
+import express, { Express, Request, Response } from "express";
+import path from "path";
+import WebSocket, { WebSocketServer } from "ws";
+
+const app: Express = express();
+const wss: WebSocketServer = new WebSocket.Server({ port: 8080 });
+const HTTP_PORT: number = 3000;
+
 app.use(express.static(path.join(__dirname, "../client")));
 
-const rooms = {};
+interface Rooms {
+  [key: string]: Set<WebSocket>;
+}
 
-function broadcastMessage(room, message) {
+const rooms: Rooms = {};
+
+function broadcastMessage(room: string, message: object): void {
   if (rooms[room]) {
-    rooms[room].forEach((client) => {
+    rooms[room].forEach((client: WebSocket) => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(JSON.stringify(message));
       }
@@ -19,14 +24,19 @@ function broadcastMessage(room, message) {
   }
 }
 
-wss.on("connection", function connection(ws) {
-  let currentRoom = null;
-  let userName = null;
+wss.on("connection", (ws: WebSocket) => {
+  let currentRoom: string | null = null;
+  let userName: string | null = null;
 
-  ws.on("message", function incoming(message) {
+  ws.on("message", (message: string) => {
     console.log("received: %s", message);
 
-    const parsedMessage = JSON.parse(message);
+    const parsedMessage: {
+      action: string;
+      user?: string;
+      room?: string;
+      content?: string;
+    } = JSON.parse(message);
 
     switch (parsedMessage.action) {
       case "join":
@@ -60,7 +70,7 @@ wss.on("connection", function connection(ws) {
     }
   });
 
-  ws.on("close", function () {
+  ws.on("close", () => {
     if (rooms[currentRoom]) {
       rooms[currentRoom].delete(ws);
       if (rooms[currentRoom].size === 0) {
@@ -75,8 +85,7 @@ wss.on("connection", function connection(ws) {
   });
 });
 
-// Endpoint to get the list of available rooms
-app.get("/rooms", (req, res) => {
+app.get("/rooms", (req: Request, res: Response) => {
   const roomList = Object.keys(rooms).map((room) => ({
     name: room,
     count: rooms[room].size,
