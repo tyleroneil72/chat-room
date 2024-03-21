@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import ChatBox from "./components/ChatBox";
 import JoinSection from "./components/JoinSection";
 import MessageBox from "./components/MessageBox";
@@ -11,7 +11,7 @@ interface Message {
 
 const App: React.FC = () => {
   const [userName, setUserName] = useState("");
-  const [roomCode, setRoomCode] = useState("");
+  const [currentRoom, setCurrentRoom] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [ws, setWs] = useState<WebSocket | null>(null);
 
@@ -31,18 +31,17 @@ const App: React.FC = () => {
     };
   }, []);
 
-  const joinRoom = (userName: string, roomCode: string) => {
-    if (!userName || !roomCode) {
+  const joinRoom = (roomName: string) => {
+    if (!userName || !roomName) {
       alert("Username and room code are required");
       return;
     }
 
-    setUserName(userName);
-    setRoomCode(roomCode);
+    setCurrentRoom(roomName);
 
     if (ws) {
       ws.send(
-        JSON.stringify({ action: "join", room: roomCode, user: userName })
+        JSON.stringify({ action: "join", room: roomName, user: userName })
       );
     }
   };
@@ -56,13 +55,24 @@ const App: React.FC = () => {
     ws.send(JSON.stringify({ action: "message", content, user: userName }));
   };
 
+  const handleGenerateCode = (): string => {
+    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    return code;
+  };
+
   return (
     <div>
       <h1>Chat Room App</h1>
-      <JoinSection onJoin={joinRoom} onGenerateCode={() => "GeneratedCode"} />
+      <JoinSection
+        onJoin={(user, room) => {
+          setUserName(user);
+          joinRoom(room);
+        }}
+        onGenerateCode={handleGenerateCode}
+      />
       <ChatBox userName={userName} messages={messages} />
       <MessageBox onSendMessage={sendMessage} />
-      <RoomsSection />
+      <RoomsSection currentRoom={currentRoom} onJoinRoom={joinRoom} />
     </div>
   );
 };
