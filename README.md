@@ -33,6 +33,15 @@ cd server
 npm install
 ```
 
+## Usage
+
+```Bash
+cd server
+node server.js
+```
+
+and open up `http://localhost:3000/`
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
