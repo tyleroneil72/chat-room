@@ -40,7 +40,7 @@ cd server
 node server.js
 ```
 
-and open up `http://localhost:3000/`
+and open `http://localhost:3000/`
 
 ## License
 
