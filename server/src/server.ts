@@ -6,7 +6,7 @@ const app: Express = express();
 const wss: WebSocketServer = new WebSocket.Server({ port: 8080 });
 const HTTP_PORT: number = 3000;
 
-app.use(express.static(path.join(__dirname, "../client")));
+app.use(express.static(path.join(__dirname, "../../client")));
 
 interface Rooms {
   [key: string]: Set<WebSocket>;
