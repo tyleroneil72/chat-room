@@ -31,17 +31,18 @@ const App: React.FC = () => {
     };
   }, []);
 
-  const joinRoom = (roomName: string) => {
-    if (!userName || !roomName) {
+  const joinRoom = (userNameInput: string, roomName: string) => {
+    if (!userNameInput || !roomName) {
       alert("Username and room code are required");
       return;
     }
 
+    setUserName(userNameInput);
     setCurrentRoom(roomName);
 
     if (ws) {
       ws.send(
-        JSON.stringify({ action: "join", room: roomName, user: userName })
+        JSON.stringify({ action: "join", room: roomName, user: userNameInput })
       );
     }
   };
@@ -79,17 +80,14 @@ const App: React.FC = () => {
   return (
     <div>
       <h1>Chat Room</h1>
-      <JoinSection
-        onJoin={(user, room) => {
-          setUserName(user);
-          joinRoom(room);
-        }}
-        onGenerateCode={handleGenerateCode}
-      />
+      <JoinSection onJoin={joinRoom} onGenerateCode={handleGenerateCode} />
       <button onClick={leaveRoom}>Leave Room</button>
       <ChatBox userName={userName} messages={messages} />
       <MessageBox onSendMessage={sendMessage} />
-      <RoomsSection currentRoom={currentRoom} onJoinRoom={joinRoom} />
+      <RoomsSection
+        currentRoom={currentRoom}
+        onJoinRoom={(roomName) => joinRoom(userName, roomName)}
+      />
     </div>
   );
 };
