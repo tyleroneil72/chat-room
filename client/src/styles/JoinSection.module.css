@@ -1,0 +1,25 @@
+.joinSection {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.joinSection input[type="text"] {
+  margin: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.joinSection button {
+  padding: 10px 15px;
+  margin: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #957dad;
+  color: white;
+  cursor: pointer;
+}
+
+.joinSection button:hover {
+  background-color: #806a9b;
+}
