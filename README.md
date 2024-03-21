@@ -10,15 +10,34 @@
 ![WS](https://img.shields.io/badge/Web%20Sockets-404D59?style=for-the-badge)
 
 ## Description
+
 This repository contains a chatroom application built to understand the workings of WebSockets. The application allows users to join different chat rooms, send messages in real-time, and see active participants in each room.
 
 ## Example
+
 ![Screenshot 2024-03-16 at 3 35 51 PM](https://github.com/tyleroneil72/chat-room/assets/43754564/39e51769-9560-449e-898d-0675b22ddc8b)
 
+## Installation
+
+1. Clone the Repository
+
+```Bash
+git clone https://github.com/tyleroneil72/chat-room.git
+cd chat-room
+```
+
+2. Install dependencies:
+
+```Bash
+cd server
+npm install
+```
 
 ## License
+
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Contact
+
 For any inquiries or questions, you can reach me at tyleroneildev@gmail.com
 or on my linkedin at https://ca.linkedin.com/in/tyler-oneil-dev
