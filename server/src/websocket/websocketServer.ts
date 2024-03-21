@@ -11,41 +11,42 @@ export function setupWebSocketServer() {
     let userName: string | null = null;
 
     ws.on("message", (message: string) => {
-      console.log("received: %s", message);
-
-      const parsedMessage: {
-        action: string;
-        user?: string;
-        room?: string;
-        content?: string;
-      } = JSON.parse(message);
+      const parsedMessage = JSON.parse(message);
 
       switch (parsedMessage.action) {
         case "join":
           userName = parsedMessage.user ?? "Anonymous";
           currentRoom = parsedMessage.room ?? "defaultRoom";
 
-          if (!rooms[currentRoom]) {
+          if (currentRoom && !rooms[currentRoom]) {
             rooms[currentRoom] = new Set();
           }
-          rooms[currentRoom].add(ws);
 
-          const joinMessage = {
-            user: "System",
-            content: `${userName} has joined the room.`,
-          };
-          broadcastMessage(currentRoom, joinMessage);
+          if (currentRoom) {
+            rooms[currentRoom].add(ws);
 
-          ws.send(
-            JSON.stringify({
-              user: "System",
-              content: `You joined ${currentRoom}.`,
-            })
-          );
+            // Notify other users in the room
+            broadcastMessage(
+              currentRoom,
+              {
+                user: "System",
+                content: `${userName} has joined the room.`,
+              },
+              ws
+            ); // Exclude the sender from the broadcast
+
+            // Direct message to the joining user
+            ws.send(
+              JSON.stringify({
+                user: "System",
+                content: `You joined ${currentRoom}.`,
+              })
+            );
+          }
           break;
 
         case "message":
-          if (currentRoom) {
+          if (currentRoom && rooms[currentRoom]) {
             broadcastMessage(currentRoom, {
               user: userName ?? "Anonymous",
               content: parsedMessage.content,
