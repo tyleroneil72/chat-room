@@ -40,15 +40,15 @@ wss.on("connection", (ws: WebSocket) => {
 
     switch (parsedMessage.action) {
       case "join":
-        userName = parsedMessage.user;
-        currentRoom = parsedMessage.room;
+        userName = parsedMessage.user ?? "Anonymous"; // Use ?? operator to default to "Anonymous" if undefined
+        currentRoom = parsedMessage.room ?? "defaultRoom"; // Use a default room if undefined
 
         if (!rooms[currentRoom]) {
           rooms[currentRoom] = new Set();
         }
         const joinMessage = {
           user: "System",
-          content: `${userName || "Someone"} has joined the room.`,
+          content: `${userName} has joined the room.`,
         };
         broadcastMessage(currentRoom, joinMessage);
 
@@ -62,23 +62,26 @@ wss.on("connection", (ws: WebSocket) => {
         );
         break;
       case "message":
-        broadcastMessage(currentRoom, {
-          user: userName || "Anonymous",
-          content: parsedMessage.content,
-        });
+        if (currentRoom) {
+          // Check if currentRoom is not null
+          broadcastMessage(currentRoom, {
+            user: userName ?? "Anonymous",
+            content: parsedMessage.content,
+          });
+        }
         break;
     }
   });
 
   ws.on("close", () => {
-    if (rooms[currentRoom]) {
+    if (currentRoom && rooms[currentRoom]) {
       rooms[currentRoom].delete(ws);
       if (rooms[currentRoom].size === 0) {
         delete rooms[currentRoom];
-      } else {
+      } else if (userName) {
         broadcastMessage(currentRoom, {
           user: "System",
-          content: `${userName || "Someone"} has left the room.`,
+          content: `${userName} has left the room.`,
         });
       }
     }
