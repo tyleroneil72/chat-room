@@ -3,8 +3,9 @@ import path from "path";
 import WebSocket, { WebSocketServer } from "ws";
 
 const app: Express = express();
-const wss: WebSocketServer = new WebSocket.Server({ port: 8080 });
 const HTTP_PORT: number = 3000;
+const WS_PORT: number = 8080;
+const wss: WebSocketServer = new WebSocket.Server({ port: WS_PORT });
 
 app.use(express.static(path.join(__dirname, "../../client")));
 
@@ -100,4 +101,4 @@ app.listen(HTTP_PORT, () => {
   console.log(`HTTP server started on port ${HTTP_PORT}`);
 });
 
-console.log("WebSocket server started on port 8080");
+console.log(`WebSocket server started on port ${WS_PORT}`);
